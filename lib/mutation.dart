@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:graphql/client.dart';
 import 'package:graphql/internal.dart';
-
+import 'package:async/async.dart' show StreamGroup;
 import 'package:graphql_flutter/src/widgets/graphql_provider.dart';
 import "dart:async";
 import 'package:flutter/material.dart';
@@ -47,10 +47,12 @@ class TestMutation extends StatefulWidget {
 class TestMutationState extends State<TestMutation> {
   GraphQLClient client;
   ObservableQuery observableQuery;
+  final streamGroup = StreamGroup<int>();
 
   WatchQueryOptions get _options => WatchQueryOptions(
         document: widget.options.document,
-        variables: widget.options.variables,
+        variables:
+            widget.options.variables, //observableQuery?.options?.variables ??
         fetchPolicy: widget.options.fetchPolicy,
         errorPolicy: widget.options.errorPolicy,
         fetchResults: false,
@@ -64,7 +66,9 @@ class TestMutationState extends State<TestMutation> {
 
     observableQuery?.close(force: true);
 
-    observableQuery = client.watchQuery(_options);
+    final newQuery = client.watchQuery(_options);
+    // newQuery.stream.drain();
+    observableQuery = newQuery;
     print("""
     
 ===================================
