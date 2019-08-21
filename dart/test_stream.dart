@@ -38,7 +38,7 @@ class ObservableData {
 var observableQuery = getGraphQLClient().watchQuery(_options);
 final observables = Set<ObservableData>();
 
-final streamGroup = StreamGroup<StreamId>();
+final streamGroup = StreamGroup<StreamId>.broadcast();
 
 runMutation() {
   return (observableQuery..variables = {'phoneNumber': '+5555555555'})
@@ -47,6 +47,7 @@ runMutation() {
 
 updateQuery() {
   final newQuery = getGraphQLClient().watchQuery(_options);
+
   final ObData = ObservableData(
       query: newQuery,
       stream: newQuery.stream.map((val) {

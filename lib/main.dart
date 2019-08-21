@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 
 import 'dart:async';
 import 'package:flutter/cupertino.dart' show CupertinoTextField;
-import './mutation.dart';
+import './mutation.dart' as MutationIssue;
+import './new_mutation.dart' as MutationFixed;
 
 final HttpLink _httpLink = HttpLink(
   uri: 'http://localhost:4000/graphql',
@@ -152,16 +153,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text("widget.title"),
       ),
       body: Column(
@@ -174,11 +167,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   context,
                   MaterialPageRoute(builder: (context) => MyHomePage()),
                 );
-                // runMutation({'phoneNumber': '+15555555555'});
               },
             ),
           ),
-          Mutation(
+          Text("FIXED"),
+          MutationFixed.Mutation(
             options: MutationOptions(
               fetchPolicy: FetchPolicy.networkOnly,
               // variables: {'phoneNumber': '+15555555555'},
@@ -197,7 +190,8 @@ class _MyHomePageState extends State<MyHomePage> {
               return buildMutationBody(context, runMutation, result);
             },
           ),
-          TestMutation(
+          Text("ISSUE"),
+          MutationIssue.TestMutation(
             options: MutationOptions(
               fetchPolicy: FetchPolicy.networkOnly,
               // variables: {'phoneNumber': '+15555555555'},
